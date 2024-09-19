@@ -1,6 +1,6 @@
 import sys
 
-from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QListWidget, QListWidgetItem,QAbstractItemView
+from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QListWidget, QListWidgetItem,QAbstractItemView,QSpinBox
 from PyQt6.QtGui import QPixmap, QFont
 
 class MainWindow(QMainWindow):
@@ -60,6 +60,14 @@ class MainWindow(QMainWindow):
         self.list_widget4.setGeometry(450, 0, 150, 125)
         self.subtheorysubtype.setSelectionMode(QAbstractItemView.SelectionMode.MultiSelection)
         self.theory_subtype.setSelectionMode(QAbstractItemView.SelectionMode.MultiSelection)
+
+    def setup_spinboxes (self):
+
+        self.octavespinbox = QSpinBox(self)
+        self.octavespinbox.setGeometry(800,0,40,40)
+        self.octavespinbox.setValue (1)
+        self.octavespinbox.setMaximum(2)
+        self.octavespinbox.setMinimum(1)
 
 
 
