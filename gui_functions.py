@@ -12,48 +12,44 @@ class gui_functions (MainWindow):
     def __init__(self):
         super().__init__()
         self.setup_function_variables()
-        pygame.mixer.init()
+        pygame.mixer.init(frequency=88200)
     def setup_function_variables(self):
 
         self.selectedscale = {}
+        self.current_scale = "None"
         self.incorrect_note_count = 0
         self.scalehistory = {}
         self.fiveormore = []
         with open('./midi.json', 'r') as file:  self.Theory2 = json.load(file)
 
     def note_handler(self, mididata):
-
         if self.theorymode == "Scales" or self.theorymode == "Modes":
-
             if mididata.type == "note_on":
-                if mididata.note == self.goodnotes[0]:
+                if mididata.note in self.goodnotes:
+                    if mididata.note == self.goodnotes[0]:
+                        self.add_note_to_screen(mididata.note, "green")
+                        #self.labels['scale2'].setText(f"{self.goodnotes}")
+                        self.goodnotes.pop(0)  # Remove the first item
+                        #self.labels['scale2'].setText(f"{self.goodnotes}")
 
-
-                    self.add_note_to_screen(mididata.note, "green")
-
-                    self.labels['scale2'].setText(f"{self.goodnotes}")
-                    self.goodnotes.pop(0)  # Remove the first item
-                    self.labels['scale2'].setText(f"{self.goodnotes}")
-
-                    if len(self.goodnotes) == 0:
-                        self.scale_archive(self.current_scale)
-                        self.go_button_clicked()
-                        print(self.check_values())
-
-                        self.labels['fiveormore'].setText(str(self.calculate_difference(self.fiveormore)))
-
+                        if len(self.goodnotes) == 0:
+                            self.scale_archive(self.current_scale)
+                            self.go_button_clicked()
+                            print(self.check_values())
+                            self.labels['fiveormore'].setText(str(self.calculate_difference(self.fiveormore)))
+                    else:
+                        self.add_note_to_screen(mididata.note, "green")
                 else:
-
                     if self.incorrect_note_count > 0:
                         self.reset_scale()
-
+                    print(f"after reset : {self.goodnotes}")
                     self.add_note_to_screen(mididata.note, "red")
                     self.incorrect_note_count += 1
 
             if mididata.type == "note_off":
                 self.remove_note_from_screen(mididata.note)
 
-                self.labels['scale2'].setText(f"{self.goodnotes}")
+                #self.labels['scale2'].setText(f"{self.goodnotes}")
 
         if self.theorymode == "Triads" or self.theorymode == "Sevenths":
 
@@ -105,7 +101,7 @@ class gui_functions (MainWindow):
     def reset_scale(self):
         if hasattr(self, 'deepnotes') and self.deepnotes:
             self.goodnotes = copy.deepcopy(self.deepnotes)
-            self.labels['scale2'] .setText(f"{self.goodnotes}")
+            #self.labels['scale2'] .setText(f"{self.goodnotes}")
 
     def add_note_to_screen(self,note,color):
         self.xcord = self.Theory2["NoteCoordinates"][note % 12] + ((note // 12) - 4) * 239
@@ -187,7 +183,7 @@ class gui_functions (MainWindow):
 
     def scales_clicked(self):
         self.theorymode = "Scales"
-
+        #self.labels['scale2'].clear()
         scaletypesselected = [item.text() for item in self.listwidgets['theory_subtype'].selectedItems()]
         if not scaletypesselected:
             self.labels['scale2'].setText("You need to select at least one sub type")
@@ -196,6 +192,10 @@ class gui_functions (MainWindow):
             self.previous_scale = None
         self.note_midi_list = self.Theory2["Enharmonic"]
         number = 0
+        randomnotestr = str(random.randint(0, 11))
+        randomnoteint = int(randomnotestr)
+        randomnoteletter = self.Theory2["Enharmonic"][randomnoteint]
+        randomtype = random.choice(scaletypesselected)
         while self.current_scale == self.previous_scale:
             number += 1
             randomnotestr = str(random.randint(0, 11))
@@ -204,14 +204,15 @@ class gui_functions (MainWindow):
             randomtype = random.choice(scaletypesselected)
             self.current_scale = f"{randomnoteletter} {randomtype}"
         number = 0
-        randomnotestr = str(random.randint(0, 11))
-        randomnoteint = int(randomnotestr)
-        randomnoteletter = self.Theory2["Enharmonic"][randomnoteint]
-        randomtype = random.choice(scaletypesselected)
+        # randomnotestr = str(random.randint(0, 11))
+        # randomnoteint = int(randomnotestr)
+        # randomnoteletter = self.Theory2["Enharmonic"][randomnoteint]
+        # randomtype = random.choice(scaletypesselected)
         self.goodnotes = (self.Theory2["Scales"][randomtype][randomnotestr])
         self.goodnotes = (
             self.midi_note_scale_generator(self.goodnotes, octaves=int(self.buttons['toggle'].text()), base_note=60))
-        self.labels['scale2'].setText(f"{self.goodnotes}")
+        #self.labels['scale2'].setText(f"{self.goodnotes}")
+
         self.labels['scale'].setText(f"{randomnoteletter} {randomtype}")
         self.deepnotes = copy.deepcopy(self.goodnotes)
         self.current_scale = f"{randomnoteletter} {randomtype}"
@@ -224,7 +225,7 @@ class gui_functions (MainWindow):
         try:
 
             self.theorymode = "Triads"
-
+            self.labels['scale2'].clear()
             scaletypesselected = [item.text() for item in self.listwidgets['theory_subtype'].selectedItems()]
             inversionselected = [item.text() for item in self.listwidgets['subtheorysubtype'].selectedItems()]
 
@@ -264,6 +265,7 @@ class gui_functions (MainWindow):
         try:
 
             self.theorymode = "Sevenths"
+            self.labels['scale2'].clear()
             scaletypesselected = [item.text() for item in self.listwidgets['theory_subtype'].selectedItems()]
             inversionselected = [item.text() for item in self.listwidgets['subtheorysubtype'].selectedItems()]
 
@@ -282,11 +284,11 @@ class gui_functions (MainWindow):
                 self.Theory2['Sevenths'][0][randomnoteletter + " " + randomtype][randominversion])
             self.goodnotes = (self.midi_note_scale_generator(self.goodnotes, octaves=int(self.buttons['toggle'].text()),
                                                              base_note=60, include_descending=False))
-            self.labels['scale'].setText(self.current_scale)
+            self.labels['scale'].setText(self.current_scale + " " + randominversion)
             self.labels['scale2'].setText(f"{self.goodnotes}")
             self.deepnotes = copy.deepcopy(self.goodnotes)
-            self.play_sound(randomnoteletter)
-            self.play_sound(randomtype)
+            # self.play_sound(randomnoteletter)
+            # self.play_sound(randomtype)
         except Exception as e:
             self.labels['scale2'].setText(f"An error occurred: {e}")
 
@@ -317,13 +319,10 @@ class gui_functions (MainWindow):
         except Exception as e:
             self.labels['scale2'].setText(f"An error occurred: {e}")
 
-    def check_values(self):
-
+    def check_values(self, threshold=2):
         for key, value in self.scalehistory.items():
-            if value >= 2 and key not in self.fiveormore:
+            if value >= threshold and key not in self.fiveormore:
                 self.fiveormore.append(key)
-
-
         return self.fiveormore
 
     def calculate_difference(self,input_list):

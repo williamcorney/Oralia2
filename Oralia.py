@@ -5,7 +5,8 @@ from gui_functions import gui_functions
 class MainApp(gui_functions):
     def __init__(self):
         super().__init__()
-        self.current_scale = ""
+
+
 
     def midi_callback(self, message):
 
