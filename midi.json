@@ -137,7 +137,7 @@
         23
       ]
     },
-    "Natural Minor" : {
+    "Minor" : {
       "0" : [
         0,
         2,
@@ -2502,7 +2502,7 @@
           5
         ]
       },
-      "C Natural Minor" : {
+      "C Minor" : {
         "Left" : [
           5,
           4,
@@ -2592,7 +2592,7 @@
           2
         ]
       },
-      "Db Natural Minor" : {
+      "Db Minor" : {
         "Left" : [
           3,
           2,
@@ -2682,7 +2682,7 @@
           5
         ]
       },
-      "D Natural Minor" : {
+      "D Minor" : {
         "Left" : [
           5,
           4,
@@ -2772,7 +2772,7 @@
           3
         ]
       },
-      "Eb Natural Minor" : {
+      "Eb Minor" : {
         "Left" : [
           2,
           1,
@@ -2862,7 +2862,7 @@
           5
         ]
       },
-      "E Natural Minor" : {
+      "E Minor" : {
         "Left" : [
           5,
           4,
@@ -2952,7 +2952,7 @@
           4
         ]
       },
-      "F Natural Minor" : {
+      "F Minor" : {
         "Left" : [
           5,
           4,
@@ -3042,7 +3042,7 @@
           2
         ]
       },
-      "Gb Natural Minor" : {
+      "Gb Minor" : {
         "Left" : [
           4,
           3,
@@ -3132,7 +3132,7 @@
           5
         ]
       },
-      "G Natural Minor" : {
+      "G Minor" : {
         "Left" : [
           5,
           4,
@@ -3222,7 +3222,7 @@
           3
         ]
       },
-      "Ab Natural Minor" : {
+      "Ab Minor" : {
         "Left" : [
           3,
           2,
@@ -3312,7 +3312,7 @@
           5
         ]
       },
-      "A Natural Minor" : {
+      "A Minor" : {
         "Left" : [
           5,
           4,
@@ -3402,7 +3402,7 @@
           4
         ]
       },
-      "Bb Natural Minor" : {
+      "Bb Minor" : {
         "Left" : [
           2,
           1,
@@ -3492,7 +3492,7 @@
           5
         ]
       },
-      "B Natural Minor" : {
+      "B Minor" : {
         "Left" : [
           4,
           3,

@@ -7,17 +7,12 @@ class MainApp(gui_functions):
         super().__init__()
 
 
-
-    def midi_callback(self, message):
-
-        self.note_handler(message)
-
 app = QApplication([])
 window = MainApp()
 window.show()
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-with mido.open_input(callback=window.midi_callback) as inport: app.exec()
+with mido.open_input(callback=window.note_handler) as inport: app.exec()
 
 
 
